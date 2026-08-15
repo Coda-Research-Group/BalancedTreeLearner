@@ -1,5 +1,9 @@
 # BATL — Balanced Tree Learner
 
+An implementation of **"Learning Balanced Tree Indexes for
+Large-Scale Vector Retrieval"** by Li et al. (KDD '23), written from the paper
+description rather than derived from the authors' code.
+
 BATL is a learned index for approximate nearest neighbor search. It replaces the
 hand-built routing structure of a k-ary tree with a transformer that predicts,
 for a query vector, the path down to the leaf buckets most likely to contain its
@@ -10,6 +14,7 @@ An index is an ensemble of independently trained trees. Training alternates
 between fitting the routing model and reassigning vectors to buckets. Search
 runs beam search over the ensemble, gathers candidates from the top-scoring
 leaves, and reranks them by exact distance.
+
 
 This is the implementation behind a bachelor thesis at the Faculty of
 Informatics, Masaryk University. It is evaluated against published BLISS and LMI
@@ -139,6 +144,45 @@ make smoke     # end-to-end build+search on synthetic data
 
 The suite is 470 tests and runs in about 15 seconds — it uses synthetic vectors
 throughout, so no dataset downloads are needed to run it.
+
+## References
+
+The method implemented here:
+
+> Wuchao Li, Chao Feng, Defu Lian, Yuxin Xie, Haifeng Liu, Yong Ge, and Enhong
+> Chen. **Learning Balanced Tree Indexes for Large-Scale Vector Retrieval.** In
+> *Proceedings of the 29th ACM SIGKDD Conference on Knowledge Discovery and Data
+> Mining (KDD '23)*, pages 1353–1362, 2023.
+> [doi:10.1145/3580305.3599406](https://doi.org/10.1145/3580305.3599406)
+
+```bibtex
+@inproceedings{li2023batl,
+  author    = {Li, Wuchao and Feng, Chao and Lian, Defu and Xie, Yuxin and
+               Liu, Haifeng and Ge, Yong and Chen, Enhong},
+  title     = {Learning Balanced Tree Indexes for Large-Scale Vector Retrieval},
+  booktitle = {Proceedings of the 29th ACM SIGKDD Conference on Knowledge
+               Discovery and Data Mining},
+  series    = {KDD '23},
+  pages     = {1353--1362},
+  year      = {2023},
+  publisher = {ACM},
+  doi       = {10.1145/3580305.3599406}
+}
+```
+
+The learned indexes it is evaluated against:
+
+- Gaurav Gupta, Tharun Medini, Anshumali Shrivastava, and Alexander J. Smola.
+  **BLISS: A Billion Scale Index Using Iterative Re-partitioning.** KDD '22,
+  pages 486–495. [doi:10.1145/3534678.3539414](https://doi.org/10.1145/3534678.3539414)
+- Matej Antol, Jaroslav Oľha, Terézia Slanináková, and Vlastislav Dohnal.
+  **Learned Metric Index: Proposition of Learned Indexing for Unstructured
+  Data.** *Information Systems* 100:101774, 2021.
+  [doi:10.1016/j.is.2021.101774](https://doi.org/10.1016/j.is.2021.101774)
+- David Procházka, Terézia Slanináková, Jozef Čerňanský, Jaroslav Oľha, Matej
+  Antol, and Vlastislav Dohnal. **Scaling Learned Metric Index to 100M
+  Datasets.** SISAP 2024, LNCS 15268, pages 266–273.
+  [doi:10.1007/978-3-031-75823-2_22](https://doi.org/10.1007/978-3-031-75823-2_22)
 
 ## Contact
 
