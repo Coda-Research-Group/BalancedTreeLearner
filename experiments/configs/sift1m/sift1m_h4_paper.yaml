@@ -1,0 +1,44 @@
+# SIFT1M BATL H=4 paper-faithful training.
+# Dataset source: ANN-Benchmarks `sift-128-euclidean.hdf5`
+# https://github.com/erikbern/ann-benchmarks
+#
+# Paper-faithful 4-tree ensemble with K=8, H=4 (K^H=4096).
+
+experiment:
+  name: sift1m_h4_paper
+  seed: 42
+  output_dir: experiments/results/sift1m/sift1m_h4_paper
+
+dataset:
+  name: sift1m
+  path: experiments/data/sift-128-euclidean.hdf5
+  source_name: ANN-Benchmarks sift-128-euclidean
+  source_url: https://github.com/erikbern/ann-benchmarks
+  split: train
+  subset_size: 1000000
+
+model:
+  branching_factor: 8
+  tree_height: 4
+  embedding_dim: 128
+  embed_dim: 256
+  num_heads: 8
+  ff_dim: 1024
+  dropout: 0.1
+  alpha: 1.0
+
+training:
+  batch_size: 256
+  learning_rate: 1.0e-4
+  weight_decay: 1.0e-5
+  convergence_patience: 2      # guardrail; paper configs should reach maturity
+  convergence_min_delta: 0.005
+  neighbor_search_subset: 1000000
+  device: mps
+
+evaluation:
+  recall_at: [10]
+  num_queries: 10000
+  beam_size: 100
+  num_leaves: [10, 20, 40, 80]
+  tree_assignment_order: confidence

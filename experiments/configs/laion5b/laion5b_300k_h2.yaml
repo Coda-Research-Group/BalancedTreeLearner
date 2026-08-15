@@ -1,0 +1,41 @@
+experiment:
+  name: laion5b_300k_h2
+  seed: 42
+  output_dir: experiments/results/laion5b/laion5b_300k_h2
+
+dataset:
+  name: laion5b_subset
+  path: data/laion5b
+  base_path: data/laion5b/laion2B-en-clip768v2-n=300K.h5
+  query_path: data/laion5b/public-queries-10k-clip768v2.h5
+  ground_truth_path: data/laion5b/laion2B-en-public-gold-standard-v2-300K.h5
+  source_name: LAION-5B
+  split: train
+  subset_size: 300000
+  metric: angular
+
+model:
+  branching_factor: 64
+  tree_height: 2
+  embedding_dim: 768
+  embed_dim: 256
+  num_heads: 8
+  ff_dim: 1024
+  dropout: 0.1
+  alpha: 1.0
+
+training:
+  batch_size: 256
+  learning_rate: 1.0e-4
+  weight_decay: 1.0e-5
+  convergence_patience: 3
+  convergence_min_delta: 0.005
+  neighbor_search_subset: 3000
+  device: cuda
+
+evaluation:
+  recall_at: [10]
+  num_queries: 10000
+  beam_size: 100
+  num_leaves: [10, 20, 40, 80]
+  tree_assignment_order: confidence

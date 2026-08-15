@@ -1,0 +1,38 @@
+# Example BATL experiment configuration.
+# One YAML = one experiment. Override per-run on the CLI if needed.
+
+experiment:
+  name: batl_default
+  seed: 42
+  output_dir: experiments/results/batl_default
+
+dataset:
+  name: deep1b          # one of: deep1b, laion5b_subset
+  path: experiments/data/deep1b     # relative to repo root
+  split: train          # train | val | test
+  subset_size: null     # null = full; or integer for quick smoke tests
+
+model:
+  # BATL architecture
+  branching_factor: 256  # K in the BATL paper for 100M-scale Deep1B
+  tree_height: 2
+  embedding_dim: 96      # Deep1B vector dimension
+  embed_dim: 256
+  num_heads: 8
+  ff_dim: 1024
+  dropout: 0.1
+  alpha: 1.0
+
+training:
+  batch_size: 256
+  learning_rate: 1.0e-4
+  weight_decay: 1.0e-5
+  convergence_patience: 3
+  convergence_min_delta: 0.005
+  neighbor_search_subset: 500000
+  device: cuda          # auto | cuda | cpu
+
+evaluation:
+  recall_at: [1, 10, 100]
+  num_queries: 10000
+  beam_size: 100

@@ -1,0 +1,50 @@
+# GloVe-100 BATL H=3 paper-faithful training.
+# Dataset source: ANN-Benchmarks `glove-100-angular.hdf5`
+# https://github.com/erikbern/ann-benchmarks
+#
+# Trains an ensemble of independent trees
+# until convergence with the paper's top-100 neighbor target.
+# Distance: angular (cosine), loaded as provided.
+
+experiment:
+  name: glove100_h3_paper
+  seed: 42
+  output_dir: experiments/results/glove100/glove100_h3_paper
+
+dataset:
+  name: glove100
+  path: experiments/data/glove-100-angular.hdf5
+  source_name: ANN-Benchmarks glove-100-angular
+  source_url: https://github.com/erikbern/ann-benchmarks
+  split: train
+  subset_size: 1183514
+  metric: angular
+  normalize: false
+
+model:
+  branching_factor: 16
+  tree_height: 3
+  embedding_dim: 100
+  embed_dim: 256
+  num_heads: 8
+  ff_dim: 1024
+  dropout: 0.1
+  alpha: 1.0
+  # Paper-faithful ensemble: each tree trains independently until convergence.
+
+training:
+  batch_size: 256
+  learning_rate: 1.0e-4
+  weight_decay: 1.0e-5
+  # Paper-faithful training: no hard cycle cap, stops on convergence.
+  convergence_patience: 3
+  convergence_min_delta: 0.001
+  neighbor_search_subset: 1183514
+  device: mps
+
+evaluation:
+  recall_at: [10]
+  num_queries: 10000
+  beam_size: 100
+  num_leaves: [10, 20, 40, 80, 100]
+  tree_assignment_order: confidence

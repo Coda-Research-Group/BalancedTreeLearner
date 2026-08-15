@@ -1,0 +1,73 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+.python-version
+
+# Environment / secrets
+.env
+.env.local
+
+# IDE
+.idea/
+.vscode/
+.claude/worktrees/
+*.swp
+*.swo
+
+# Agent tooling scratch
+.superpowers/
+tmp/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.ruff_cache/
+.mypy_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Datasets (large, download separately)
+experiments/data/*
+!experiments/data/.gitkeep
+
+# Experiment artifacts
+
+experiments/results/*
+experiments/results/*.pt
+experiments/results/*.npy
+experiments/results/*.npz
+experiments/results/*.pkl
+experiments/results/*.bin
+experiments/results/**/*.pt
+experiments/results/**/*.npy
+experiments/results/**/*.npz
+experiments/results/**/*.pkl
+experiments/results/**/*.bin
+experiments/results/**/*.faiss
+experiments/results/**/*.index
+*.faiss
+*.index
+*.hdf5
+*.h5
+checkpoints/
+wandb/
+mlruns/
+logs/
+*.log
+
+# Agent tooling
+/.claude/

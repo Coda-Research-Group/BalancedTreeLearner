@@ -1,0 +1,59 @@
+experiment:
+  name: laion5b_10m_clip768v2_lmi
+  seed: 42
+  output_dir: experiments/results/laion5b/laion5b_10m_clip768v2_lmi
+  tree_assignment_mode: round
+  tree_assignment_order: confidence
+
+dataset:
+  name: laion5b_subset
+  path: data/laion5b
+  base_path: data/laion5b/laion2B-en-clip768v2-n=10M.h5
+  query_path: data/laion5b/public-queries-10k-clip768v2.h5
+  ground_truth_path: data/laion5b/laion2B-en-public-gold-standard-v2-10M.h5
+  source_name: LAION-2B English CLIP768v2 (SISAP 2023)
+  source_url: https://sisap-challenges.github.io/2023/datasets/
+  split: train
+  # The SISAP/LMI "10M" artifact contains 10,120,191 vectors; LMI loads all rows.
+  subset_size: 10120191
+  metric: angular
+  normalize: false
+  storage_mode: auto
+
+model:
+  branching_factor: 256
+  tree_height: 2
+  embedding_dim: 768
+  encoder_hidden: 1024
+  embed_dim: 256
+  num_decoder_layers: 1
+  num_heads: 8
+  ff_dim: 1024
+  dropout: 0.1
+  alpha: 1.0
+  num_trees: 4
+
+training:
+  batch_size: 4096
+  learning_rate: 1.0e-4
+  weight_decay: 1.0e-5
+  alternating_interval: 2
+  convergence_patience: 3
+  convergence_min_delta: 0.005
+  top_k_neighbors: 100
+  # ceil(1% of 10,120,191), following the large-scale label-mining convention.
+  neighbor_search_subset: 101202
+  neighbor_search_mode: sequential_chunked
+  neighbor_search_chunk_size: 1000000
+  neighbor_search_backend: faiss_gpu
+  label_refresh: per_cycle
+  tree_update_cache_embeddings: false
+  tree_update_batch_size: auto
+  device: cuda
+
+evaluation:
+  recall_at: [10]
+  num_queries: 10000
+  beam_size: 300
+  num_leaves: [100, 150, 200, 250, 300]
+  rerank_backend: numpy_cpu

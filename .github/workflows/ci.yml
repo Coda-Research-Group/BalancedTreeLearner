@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: pip install -e ".[dev]"
+
+      - name: Format check (ruff)
+        run: ruff format --check
+
+      - name: Lint (ruff)
+        run: ruff check
+
+      - name: Type check (pyright)
+        run: pyright batl/
+
+      # Covers the former standalone smoke step: the build.py + search.py
+      # end-to-end run on synthetic data lives in
+      # tests/experiments/scripts/test_build_search_smoke.py.
+      - name: Test (pytest + coverage)
+        run: pytest
